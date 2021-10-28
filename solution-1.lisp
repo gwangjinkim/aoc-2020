@@ -1,12 +1,14 @@
 ;; https://adventofcode.com/2020/day/1
 
-;; first attempt was:
+#|
+;; the first attempt to read-in the data was:
 (ql:quickload "dexador")
 (defparameter *url* "https://adventofcode.com/2020/day/1/input")
 (defparameter *request* (dex:get *url*))
 ;; puzzle input differ between users
 ;; therefore, I decided, it is better to copy paste from url manually
 ;; the numbers:
+|#
 
 (defparameter *numbers* '(2004
 1823
@@ -209,16 +211,21 @@
 1459
 1619))
 
-(loop for k in *numbers*
-      for i from 0
-      do (loop for m in (subseq *numbers* i (length *numbers*))
-               do (when (= (+ k m) 2020)
-                    (format t "k = ~a~%m = ~a~%k + m = ~a~%k * m = ~a~%"
-                            k
-                            m
-                            (+ k m)
-                            (* k m))
-                     (return (* k m)))))
+;; required: fint first pair of numbers which sums up to 2020, the solution is their product.
+
+(defun solve-1 (numbers)
+  (loop for k in numbers
+        for i from 0
+        do (loop for m in (subseq numbers i (length numbers))
+                 do (when (= (+ k m) 2020)
+                      (format t "k = ~a~%m = ~a~%k + m = ~a~%k * m = ~a~%"
+                              k
+                              m
+                              (+ k m)
+                              (* k m))
+                       (return (* k m))))))
+  
+(assert (= 1020084 (solve-1 *numbers*))) ;; => t  
 
 #|
 k = 1014
