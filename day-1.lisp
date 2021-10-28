@@ -213,7 +213,7 @@
 
 ;; required: fint first pair of numbers which sums up to 2020, the solution is their product.
 
-(defun solve-1 (numbers)
+(defun solution-1 (numbers)
   (loop for k in numbers
         for i from 0
         do (loop for m in (subseq numbers i (length numbers))
@@ -225,11 +225,37 @@
                               (* k m))
                        (return (* k m))))))
   
-(assert (= 1020084 (solve-1 *numbers*))) ;; => t  
+(assert (= 1020084 (solution-1 *numbers*))) ;; => t  
 
 #|
 k = 1014
 m = 1006
 k + m = 2020
 k * m = 1020084 <= this result is correct.
+|#
+
+(defun solution-2 (numbers)
+  (let ((res 0))
+    (loop for k in numbers
+          for i from 0
+          do (loop for m in (subseq numbers i (length numbers))
+                   for j from i
+                   do (loop for n in (subseq numbers j (length numbers))
+                            do (when (= (+ k m n) 2020)
+                                 (setf res (* k m n))
+                                 (format t "k = ~a~%m = ~a~%n = ~a~%k + m + n = ~a~%k * m * n = ~a~%"
+                                         k
+                                         m
+                                         n
+                                         (+ k m n)
+                                         res))))
+          finally (return res))))
+#|  
+* (solution-2 *numbers*)
+k = 780
+m = 542
+n = 698
+k + m + n = 2020
+k * m * n = 295086480
+295086480
 |#
